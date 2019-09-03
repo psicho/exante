@@ -45,10 +45,10 @@ def create_tables(db_path=DEFAULT_PATH):
     con.close()
 
 
-def add_row_to_data_base(table_for_add, *args):
+def add_row_in_data_base(table_for_add, *args):
     con = connect_db()
-    # print(args)
     sd = str(args).strip('()')
+
     # Insert a row of data
     con.execute("INSERT INTO %s VALUES (%s)" %(table_for_add, sd))
 
@@ -59,44 +59,42 @@ def add_row_to_data_base(table_for_add, *args):
     con.close()
 
 
-def add_commodity_to_data_base(product, exchange, combined_commodity):
-    pass
+def delete_row_in_data_base(table_for_add, param, value):
+    con = connect_db()
+
+    # Delete row
+    con.execute('Delete from %s where %s = %s' %(table_for_add, param, value))
+
+    # Save (commit) the changes
+    con.commit()
+
+    # close connection database
+    con.close()
+
+def read_in_data_base(table_for_add, param, value):
+    con = connect_db()
+    cur = con.cursor()
+
+    # Read
+    cur.execute('select * from %s where %s = %s' %(table_for_add, param, value))
+    # cur.execute('select * from %s' %(table_for_add))
+
+    records = cur.fetchall()
+
+    # close connection database
+    con.close()
+
+    return records
 
 
 # create_tables()
-add_row_to_data_base('commodity', 'product', 'exchange', 'combined_commodity')
-add_row_to_data_base('risk_arrays', '32398r238r2', 'product', 'exchange', 'product_type', '2019-08-28', 20156, 'option_right', '(123,334,334)', 223, 444, 666)
+# add_row_to_data_base('commodity', 'product', 'exchange', 'combined_commodity')
+# add_row_to_data_base('risk_arrays', '32398r238r2', 'product', 'exchange', 'product_type', '2019-08-28', 20156, 'option_right', '(123,334,334)', 223, 444, 666)
 
 
+# delete_row_in_data_base('commodity', 'product', 'product')
 
-
-
-
-
-
-
-
-
-# conn = sqlite3.connect('example.db')
-
-
-
-# db_connect()
-
-# from db_utils import db_connect
-# con = db_connect() # connect to the database
-# cur = con.cursor() # instantiate a cursor obj
-# customers_sql = """
-# CREATE TABLE customers (
-#      id integer PRIMARY KEY,
-#      first_name text NOT NULL,
-#      last_name text NOT NULL)"""
-# cur.execute(customers_sql)
-# products_sql = """
-#  CREATE TABLE products (
-#      id integer PRIMARY KEY,
-#      name text NOT NULL,
-#      price real NOT NULL)"""
-# cur.execute(products_sql)
+# print(len(read_in_data_base('risk_arrays', 'product', 'product')))
+# print(read_in_data_base('risk_arrays', 'product', 'product'))
 
 

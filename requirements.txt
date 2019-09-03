@@ -1,4 +1,3 @@
-ftplib
 requests
 lxml
 ftputil
